@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vertex</title>
+    <meta name="author" content="helloworld-1839">
+</head>
+
+<body>
+    <div id="app">
+        <canvas id="fill"></canvas>
+        <canvas id="stroke"></canvas>
+        <canvas id="cursor"></canvas>
+        <canvas id="points"></canvas>
+        <canvas id="uicanvas"></canvas>
+        <div id="overlay">
+            <div class="container">
+                <p>Choose a puzzle</p>
+                <select name="puzzle" id="select">
+                    <option value="">Choose a puzzle</option>
+                    <hr>
+                    <optgroup label="2024"></optgroup>
+                    <hr>
+                    <optgroup label="2023"></optgroup>
+                    <hr>
+                    <optgroup label="2022"></optgroup>
+                    <hr>
+                    <optgroup label="2021"></optgroup>
+                    <hr>
+                    <optgroup label="2020"></optgroup>
+                    <hr>
+                    <optgroup label="2019"></optgroup>
+                </select>
+                <button id="selectpuzzle">Select</button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
