@@ -10,7 +10,11 @@
   },
   "license": "GPL-3.0",
   "devDependencies": {
+    "@types/hammerjs": "^2.0.45",
     "typescript": "^5.5.3",
     "vite": "^5.4.1"
+  },
+  "dependencies": {
+    "hammerjs": "^2.0.8"
   }
 }
