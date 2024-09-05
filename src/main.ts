@@ -1,6 +1,6 @@
-import './style.css'
-import testPuzzle from './test.json'
-import Hammer, { on } from 'hammerjs';
+import Hammer from 'hammerjs';
+import './style.css';
+import testPuzzle from './test.json';
 
 interface Vector { x: number, y: number };
 function sqr(x: number) { return x * x }
