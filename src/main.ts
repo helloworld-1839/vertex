@@ -1,6 +1,6 @@
 import './style.css'
 import testPuzzle from './test.json'
-import Hammer from 'hammerjs';
+import Hammer, { on } from 'hammerjs';
 
 interface Vector { x: number, y: number };
 function sqr(x: number) { return x * x }
@@ -601,25 +601,15 @@ function render() {
     renderUI();
 }
 
-async function fetchPuzzles() {
-    const select = <HTMLElement>document.getElementById('select');
-    const response = await fetch('https://api.github.com/repos/Q726kbXuN/vertex/git/trees/master?recursive=1'); // THANK YOU
-    const data = await response.json();
-    const puzzles = data.tree.filter((file: { path: string, url: string }) => file.path.startsWith('data/'));
-    puzzles.reverse().forEach((puzzle: { path: string, url: string})  => {
-        const path = puzzle.path.split('/')[3];
-        if (path) {
-            const year = parseInt(path.split('-')[0]);
-            const option = document.createElement('option');
-            option.value = puzzle.url;
-            option.innerText = path.split('.')[0];
-            select.children[2*(2024-year) + 2].append(option);
-        }
-    });
-}
-document.getElementById('selectpuzzle')?.addEventListener('click', async () => {
-    const url = (<HTMLSelectElement>document.getElementById('select')).value;
+const onSelectListener = async () => {
+    const element = (<HTMLSelectElement>document.getElementById('select'))
+    const url = element.value;
     if (url) {
+        const selectedOption = element.options[element.selectedIndex];
+        const selectedLabel = selectedOption.text;
+
+        window.history.pushState({}, '', selectedLabel);
+
         (<HTMLDivElement>document.getElementById('overlay')).style.display = 'none';
         let response = await fetch(url);
         let data = await response.json();
@@ -629,5 +619,47 @@ document.getElementById('selectpuzzle')?.addEventListener('click', async () => {
         (<HTMLDivElement>document.getElementById('overlay')).style.display = 'none';
         createGame(testPuzzle);
     }
-});
+};
+
+let requestedPuzzle: string | null = null;
+
+window.addEventListener('load', () => {
+    const url = window.location.href;
+    const dateRegex = /\/(\d{4}-\d{2}-\d{2})/;
+    const match = url.match(dateRegex);
+  
+    if (match) {
+        requestedPuzzle = match[1];
+        console.log('requested puzzle', requestedPuzzle);
+    }
+  });
+
+async function fetchPuzzles() {
+    const select = <HTMLElement>document.getElementById('select');
+    const response = await fetch('https://api.github.com/repos/Q726kbXuN/vertex/git/trees/master?recursive=1'); // THANK YOU
+    const data = await response.json();
+    const puzzles = data.tree.filter((file: { path: string, url: string }) => file.path.startsWith('data/'));
+    let shouldLoadPuzzle = false
+    puzzles.reverse().forEach((puzzle: { path: string, url: string})  => {
+        const path = puzzle.path.split('/')[3];
+        if (path) {
+            const year = parseInt(path.split('-')[0]);
+            const option = document.createElement('option');
+            option.value = puzzle.url;
+            option.innerText = path.split('.')[0];
+            select.children[2*(2024-year) + 2].append(option);
+
+            if (requestedPuzzle && option.innerText === requestedPuzzle) {
+                option.selected = true;
+                shouldLoadPuzzle = true;
+            }
+        }
+    });
+
+    if (shouldLoadPuzzle) {
+        onSelectListener();
+    }
+}
+
+document.getElementById('selectpuzzle')?.addEventListener('click', onSelectListener);
 fetchPuzzles();
