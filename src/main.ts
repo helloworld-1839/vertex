@@ -478,7 +478,7 @@ function handleSelection() {
             closestKey = key;
         }
     }
-    if (closestKey && dist < ((1.3*getPointSize(closestKey)) / scale) ** 2) {
+    if (closestKey && dist < ((2.3*getPointSize(closestKey)) / scale) ** 2) {
         if (mouseDown) {
             clicked = puzzle.vertices[closestKey];
             clicked.selected = 1;
