@@ -86,7 +86,7 @@ function createGame(puzzleData: Puzzle) {
         }
         extents = getExtents();
     }
-    
+
     xShift = -extents.minX + document.documentElement.clientWidth * canvasScale / 2 - (extents.maxX - extents.minX) / 2;
     yShift = -extents.minY + document.documentElement.clientHeight * canvasScale / 2 - (extents.maxY - extents.minY) / 2;
 
@@ -95,7 +95,7 @@ function createGame(puzzleData: Puzzle) {
     window.addEventListener('touchmove', event => event.preventDefault());
     window.addEventListener('keyup', onKeyup);
     window.addEventListener('wheel', onWheel);
-    
+
 
     uiCanvas.addEventListener('mousedown', onMousedown);
     uiCanvas.addEventListener('mouseup', onMouseup);
@@ -294,7 +294,7 @@ function renderCursor() {
         cursorCtx.lineTo(mouse.x, mouse.y);
         cursorCtx.stroke();
         cursorCtx.closePath();
-        
+
         cursorCtx.moveTo(mouse.x, mouse.y);
         cursorCtx.arc(mouse.x, mouse.y, 4, 0, 2 * Math.PI);
         cursorCtx.fill();
@@ -426,8 +426,8 @@ hammertime.on('pinch', function (event) {
         mouseDown = true;
         pinchStart = scale;
     }
-    const newScale = pinchStart + (event.scale - 1);
-    
+    const newScale = pinchStart * event.scale;
+
     const focusX = (event.center.x) * canvasScale;
     const focusY = (event.center.y) * canvasScale;
 
@@ -456,13 +456,13 @@ function onMousedown(event: MouseEvent) {
         }
         if (closest && closestDist < 5) {
             let stroke = completedStrokes.indexOf(<Stroke>isStrokeCompleted(closest));
-            completedStrokes.splice(stroke, 1); 
+            completedStrokes.splice(stroke, 1);
             render();
         }
         return;
     }
     mouseDown = true;
-    
+
     handleSelection();
 }
 let hovered: Vertex;
@@ -587,7 +587,7 @@ function onTouchMove(event: TouchEvent) {
             yShift += dy;
             render();
         }
-        
+
     }
 }
 function onTouchEnd(event: TouchEvent) {
